@@ -62,19 +62,18 @@
 \thispagestyle{empty}
 
 \setcounter{page}{0}
-\addcontentsline{toc}{chapter}{Preface}
-\ 
+
 \begin{center}
   \vfill
   {
-  \huge \bf \textsc{Title of Research}\\
-  \large Subtitle\\[20pt]
+  \huge \bf \textsc{The Optimization of Communication Protocols in the AI\_r Air Quality Monitoring System used in Underground Mines}
+  \vspace{50pt}\\
   \large School of Computer Science \& Applied Mathematics\\
   \large University of the Witwatersrand\\[20pt]
   \normalsize
-  Your Name\\
-  Your Student Number\\[20pt]
-  Supervised by Dr McProfessorFace\\[10pt]
+  Alexandra Barry\\
+  1056862\\[20pt]
+  Supervised by Bruce Mellado\\[10pt]
   \today
   }
 
@@ -82,9 +81,8 @@
   \vfill
   \includegraphics[width=1.5cm]{images/wits}
   \vspace{10pt}\\
-  \small{Ethics Clearance Number: XX/XX/XX}\\[10pt]
   \small{A proposal submitted to the Faculty of Science, University of the Witwatersrand, Johannesburg,
-in partial fulfilment of the requirements for the degree of Bachelor of Science with Honours}\\
+in partial fulfilment of the requirements for the degree of Master of Science}\\
 \end{center}
 \vfill
 \newpage
@@ -93,25 +91,20 @@ in partial fulfilment of the requirements for the degree of Bachelor of Science 
 \setcounter{page}{1}
 
 \phantomsection
-\begin{abstract}
-Abstract things....
-\end{abstract}
-
-\phantomsection
 \begin{declaration}
-I, ---------, hereby declare the contents of this research proposal to be my own work.
-This proposal is submitted for the degree of Bachelor of Science with Honours in Computer Science at the University of the Witwatersrand.
+I, Alexandra May Barry, hereby declare the contents of this research proposal to be my own work.
+This proposal is submitted as a requirement for the course 'COMS7060' within of the degree of Master of Science in Robotics at the University of the Witwatersrand.
 This work has not been submitted to any other university, or for any other degree.
 \end{declaration}
 
 \phantomsection
-\begin{acknowledgements}
-Thanks World.
-\end{acknowledgements}
-
+\begin{abstract}
+Abstract things....
+[The abstract outlines the relevant background, the research problem or question, and
+methods.]
+\end{abstract}
 
 \phantomsection
-\addcontentsline{toc}{section}{Table of Contents}
 \tableofcontents
 \newpage
 \phantomsection
@@ -125,20 +118,125 @@ Thanks World.
 \pagenumbering{arabic}
 
 \chapter{Introduction}
-\section{Hello World}
-Introduction things...\\
-\section{Another Section}
-\subsection{This is a Subsection}
+[Introduction]
+
+\chapter{Background and Related Work}
+[The literature review shows a familiarity with
+the literature relevant to the project and motivates the research problem or question.
+]
+\section{Introduction}
+This chapter details the existing project: 'AI\_r' for which this research is an extension of, examines the importance of air quality monitoring and explores related research and similar projects.
+\section{Background}
+\subsection{Air Quality Monitoring}
 \subsubsection{This is a subsubsection}
 This is just a paragraph
-\subsection{A Subsection about Citation Style}
+
+\subsection{The SACAQM AI\_r System}
+\subsubsection{Purpose}
+The AI\_r system was developed as a solution to the high cost and complexity of traditional air quality monitoring stations\citep{SACAQM}. It will supplement the existing national quality monitoring systems by adding hundreds of thousands of additional sensor nodes. The system is comprised of air quality sensors within an IoT network, powered by Artificial Intelligence with the aim of providing accurate prediction and analysis of air quality in real time\citep{SACAQM}.
+
+\subsubsection{Sensor Node Architecture}
+Text
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.6\linewidth]{images/SensorNodes.png}
+	\caption{AI\_r Sensor Nodes}
+	\label{fig:SensorNodes}
+\end{figure}
+
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/Network_topology_of_AI_r_system_cropped.png}
+	\caption{Network Topology of AI\_r System}
+	\label{fig:NetworkTopology}
+\end{figure}
+
+
+
+\subsection{Wireless Communication}
+[Wireless communication methods used in the system are...]
+\subsubsection{LoRa}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/Network_topology_of_AI_r_system_cropped.png}
+	\caption{Network Topology of AI\_r System}
+	\label{fig:NetworkTopology}
+\end{figure}
+
+Text \Cref{fig:LoRaTransmissionSpectogram}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/LoRa transmission spectogram.png}
+	\caption{Spectogram of LoRa Transmission, taken from \cite{Liando2019KnownStudy}}
+	\label{fig:LoRaTransmissionSpectogram}
+\end{figure}
+
+
+\begin{enumerate}
+    \item Network Topologies
+    \item Performance Metrics
+\end{enumerate}
+
+\subsubsection{4G}
+\begin{enumerate}
+    \item Network Analysis
+    \item Performance Metrics
+\end{enumerate}
+
+\subsection{Mining Environment}
+\subsubsection{Typical Mining Architectures}
+\subsubsection{Network Interference in Mining Context}
+
+\section{Related Work}
+
+\section{Conclusion}
+
+\chapter{Research Aims, Hypothesis and Methodology}
+[The candidate shows a familiarity with the
+methods available for solving the research
+problem or answering the research question,
+and the chosen methods are well-motivated.]
+
+\section{Problem Statement}
+\section{Research Question}
+[The research problem or question is clear, sufficiently narrow, and solvable or answerable
+within the constraints of the project.]
+\section{Research Aims and Objectives}
+\subsection{Research Aims}
+[The aim and objectives are relevantly related
+to the research problem or question.]
+\subsection{Objectives}
+\section{Limitations}
+\begin{itemize}
+\item Apparatus
+\item Mine context
+\end{itemize}
+
+\section{Research design}
+\section{Methods}
+\section{Limitations}
+
+\chapter{Schedule of Work}
+[The schedule of work is sufficiently detailed
+and is feasible
+]
+\section{Schedule of Work}
+
+
+\chapter{Latex tools}
+
+\section{A Section about Citation Style}
 Citations are important. Citation style for Computer Science is:
 \begin{itemize}
 \item When used in the text, use the authors with the date in brackets:\\ \citet{klein17} say very important things.
 \item When used as a reference after a face, put everything in brackets:\\ Import things are true \citep{klein17}.
 \end{itemize}
 
-\subsection{Compiling}
+\section{Compiling}
 Remember to compile multiple times to resolve references. Usually:
 \begin{verbatim}
 pdflatex file.tex
@@ -148,7 +246,6 @@ pdflatex file.tex
 \end{verbatim}
 
 
-\chapter{Floats}
 \LaTeX\ decides how to place images. It also does the referencing for you as seen in \Cref{fig:thing1}. If you have subimages, they should have their own captions and labels -- look into the subfig or subfigure packages.
 
 \begin{figure}[ht]
@@ -192,8 +289,6 @@ CleverRef and VarioRef are helpful:
 	\item CleverRef+VarioRef: See \Vref{fig:thing1} and \Vref{tab:tab1}
 \end{itemize}
 
-\chapter{IDE/Editors}
-Overleaf has a great online editor for latex. Use it. 
 
 \appendix
 \chapter{Extra Stuff}\label{app:extra}
@@ -203,5 +298,5 @@ An appendix is useful when there is information that you need to include, but br
 
 \nocite{*}
 
-\bibliography{references}\addcontentsline{toc}{chapter}{References}
+\bibliography{references, references-mendeley}\addcontentsline{toc}{chapter}{References}
 \end{document}
