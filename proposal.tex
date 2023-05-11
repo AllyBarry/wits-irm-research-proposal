@@ -161,9 +161,9 @@ Text
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\linewidth]{images/Network_topology_of_AI_r_system_cropped.png}
-	\caption{Network Topology of AI\_r System}
-	\label{fig:NetworkTopology}
+	\includegraphics[width=0.5\linewidth]{images/LoRa_Why_Range.png}
+	\caption{Diagram of LoRa Range, taken from \cite{Semtech_2023}}
+	\label{fig:LoRaRange}
 \end{figure}
 
 Text \Cref{fig:LoRaTransmissionSpectogram}
@@ -180,6 +180,15 @@ Text \Cref{fig:LoRaTransmissionSpectogram}
     \item Network Topologies
     \item Performance Metrics
 \end{enumerate}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\linewidth]{images/LoRa_propagation_line_of_sight.png}
+	\caption{Communication Distances for Varying Spreading Factors in Different Environments, taken from \cite{Liando2019KnownStudy}}
+	\label{fig:LoRaTransmissionSpectogram}
+\end{figure}
+
+\^ communication is fine up to 9km for line-of-sight environments but propagation is impacted when obstructed
 
 \subsubsection{4G}
 \begin{enumerate}
@@ -205,6 +214,9 @@ and the chosen methods are well-motivated.]
 \section{Research Question}
 [The research problem or question is clear, sufficiently narrow, and solvable or answerable
 within the constraints of the project.]
+- Are there adjustments to the networks used that would need to be made for a mining environment
+- How can the parameters and features of the selected networks be optimized for performance in a mining context
+- Are the selected networks in the system sufficient for coping in a mining environment
 \section{Research Aims and Objectives}
 \subsection{Research Aims}
 [The aim and objectives are relevantly related
@@ -218,6 +230,9 @@ to the research problem or question.]
 
 \section{Research design}
 \section{Methods}
+- Analysis of research in various networks and performance within mining context
+- Development of a test scenario in the Wits mock mine shaft
+- 
 \section{Limitations}
 
 \chapter{Schedule of Work}
@@ -288,13 +303,6 @@ CleverRef and VarioRef are helpful:
 	\item CleverRef: See \Cref{fig:thing1} and \Cref{tab:tab1}
 	\item CleverRef+VarioRef: See \Vref{fig:thing1} and \Vref{tab:tab1}
 \end{itemize}
-
-
-\appendix
-\chapter{Extra Stuff}\label{app:extra}
-\section{What is an appendix?}\label{app:whatis}
-
-An appendix is useful when there is information that you need to include, but breaks the flow of your document, e.g. a large number of figures/tables may need to be shown, but maybe only one needs to be in the text and the rest are just included for completeness.
 
 \nocite{*}
 
