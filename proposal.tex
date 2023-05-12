@@ -66,7 +66,7 @@
 \begin{center}
   \vfill
   {
-  \huge \bf \textsc{The Optimization of Wireless Communication in the AI\_r Air Quality Monitoring System used in Underground Mines}
+  \huge \bf \textsc{The Optimization of Wireless Communication in an Air Quality Monitoring System for use in Underground Mines}
   \vspace{50pt}\\
   \large School of Computer Science \& Applied Mathematics\\
   \large University of the Witwatersrand\\[20pt]
@@ -129,59 +129,72 @@ This report examines the practicality of extending the AI\_r system into a minin
 [explanation of sections]
 
 \chapter{Background and Related Work}
-[The literature review shows a familiarity with
-the literature relevant to the project and motivates the research problem or question.
-]
+
 \section{Introduction}
 This chapter details the existing project: 'AI\_r' for which this research is an extension of, examines the importance of air quality monitoring and explores related research and similar projects.
 
 \section{Background}
 \subsection{Air Quality Monitoring}
-
-... Discuss air quality monitoring
-This is just a paragraph
-
-Many harmful aerosols, including: quarts, silica, arsenic, diesel and particulate matter are generated during the mining process and this affects miners both under and above ground\citep{Hercus_2022}. Real-time, accurate air quality measurements are critical to assist in monitoring whether exposure is above regulatory limits. These readings can be used to warn miners or can indicate the need for improved ventilation and mining operation mechanisms. It's estimated that 50\% of the energy consumed in mining operations is due to the ventilation systems\citep{Hercus_2022}. Integrating air quality measurements into an automated ventilation control system could provide a cost-effective method of ensuring a healthy supply of fresh air to the miners. 
+ Air pollution has been linked to many health impediments such as heart disease, strokes, lung cancer and both acute and chronic respiratory diseases \citep{WHO_2022}. The World Health Organization (WHO) has created a set of air quality guidelines (AQG) that stipulate the thresholds and limits for air pollutants that are known to create risks to ones health. \cite{WHO_2022} has claimed that in 2019, 99\% of the world's population was living in an environment with air quality below these regulatory guidelines. Policies and investments can be made by governing bodies to mitigate air pollution by supporting better practices in power generation, transportation, industry and waste management.
+ \newline \newline
+Many harmful aerosols, including: quarts, silica, arsenic, diesel and particulate matter are generated during the mining process and this affects miners both under and above ground\citep{Hercus_2022}. Real-time, accurate air quality measurements are critical to assist in monitoring whether exposure is above regulatory limits. These readings can be used to warn miners or can indicate the need for improved ventilation and mining practices. It is estimated that 50\% of the energy consumed in mining operations is due to the ventilation systems\citep{Hercus_2022}. Integrating air quality measurements into an automated ventilation control system could provide a cost-effective method of ensuring a healthy supply of fresh air to the miners. 
 
 \subsection{The SACAQM AI\_r System}
 \subsubsection{Purpose}
 The AI\_r system was developed as a solution to the high cost and complexity of traditional air quality monitoring stations\citep{SACAQM}. It will supplement the existing national quality monitoring systems by adding hundreds of thousands of additional sensor nodes. The system is comprised of air quality sensors within an IoT network, powered by Artificial Intelligence with the aim of providing accurate prediction and analysis of air quality in real time\citep{SACAQM}.
 
-\subsubsection{Sensor Node Architecture}
-Text
-
-Nodes equipped with the following sensor suite: ambient temperature, relative humidity, ambient pressure, SO2, NO, NO2, PM2.5, PM10.
-
-Master nodes: 
-- high-quality measurement of PM2.5 and other measurements
-- these require significant electrical power - battery powered
-- connected to cloud via 4G networks
-- designed to be self-sufficient for up to 1 year with battery power
-- SEN55x sensor
-- nRF5160 SiP
-
-Slave nodes:
-- less accurate PM2.5 sensors, used to create alerts of poor quality air conditions
-- communicate with other master nodes through LoRa
-- solar cell powered
-- nRF52840 SoC
-- 
+\subsubsection{System Architecture}
+The AI\_r system includes various layers, from the low-level sensor devices to the real-time analysis and predictive modeling of data received. This section will focus on the sensor devices and network layers, as these are the areas of interest for wireless communication optimization. Figure \ref{fig:AQMSystemOverview} shows a high level overview of the full system.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.6\linewidth]{images/SensorNodes.png}
-	\caption{AI\_r Sensor Nodes}
-	\label{fig:SensorNodes}
+	\includegraphics[width=0.5\linewidth]{images/AirQualitySystemOverview.png}
+	\caption{AI\_r System High Level Overview}
+	\label{fig:AQMSystemOverview}
 \end{figure}
 
+The layers of interest can be defined as the following:
+\begin{enumerate}
+    \item \textbf{The Sensing Layer}: the set of all IoT sensor nodes
+    \item \textbf{The Network Layer}: the faciliation of communication across devices, systems and the cloud
+\end{enumerate}
+
+An important factor of the Network Layer is reliable and timely transmission of data.
+\newline \newline
+Figure \ref{fig:NetworkTopology} shows a diagram of the two layers combined. The sensor nodes are connected to one another via a LoRa mesh network and the master nodes connect to the cloud via 4G connections.
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=0.5\linewidth]{images/Network_topology_of_AI_r_system_cropped.png}
+	\includegraphics[width=0.4\linewidth]{images/Network_topology_of_AI_r_system_cropped.png}
 	\caption{Network Topology of AI\_r System}
 	\label{fig:NetworkTopology}
 \end{figure}
 
+\newline
+There are two types of sensor nodes included in the system. The master nodes are based on Nordic Semiconductor nRF5160 SiPs and by default include the following sensor types:
+\begin{itemize}
+    \item ambient temperature
+    \item relative humidity
+    \item ambient pressure
+    \item SO2
+    \item NO
+    \item NO2
+    \item PM2.5 (high quality)
+    \item PM10
+\end{itemize}
+These measurements require more power and the selection of sensor types per node can be adapted to suit the requirements of the monitoring system. The nodes include an internally housed battery that is expected to power the node for up to one year. These nodes are connected to the cloud via 4G networks.
+\newline
+The slave sensor nodes are based on the Nordic Semiconductor nRF52840 System on Chip (SoC) and include less accurate PM2.5 sensors. They connect to other master nodes through LoRa (low-power, long range radio communication) and are solar powered.
+\newline 
+
+Figure \ref{fig:SensorNodes} shows a computer-generated drawing of one of these sensor nodes (right) and an image of three of the nodes (left).
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.5\linewidth]{images/SensorNodes.png}
+	\caption{AI\_r Sensor Nodes}
+	\label{fig:SensorNodes}
+\end{figure}
 
 
 \subsection{Wireless Communication}
@@ -268,38 +281,24 @@ Applications of wireless sensor networks to improve occupational and health in u
 DeepSense: Sensing the Radio Signal Behavior in Metal and Non-Metal Underground Mine Workings \cite{Ranjan2018DeepSense:Workings}
 
 \chapter{Research and Methodology}
-[The candidate shows a familiarity with the
-methods available for solving the research
-problem or answering the research question,
-and the chosen methods are well-motivated.]
+This section establishes the research question for the project and from which, objectives and deliverables are derived. A methodology for achieving these deliverables is drawn up and the limitations of the project are then discussed.
 
 \section{Introduction and Problem Statement}
-air quality importance
-use in mining space to prevent disease
-need for effective IoT systems
-existing AI\_r system
-extension of that includes networks that may not be suited to mining context
-need to analyze how these can be optimized for power and SNR
+The effective management of air quality is critical for governing bodies and individuals to make responsible decisions and ensure healthy living and working conditions. IoT systems have been introduced in this space to replace or complement existing air monitoring systems that are traditionally more expensive and inefficient. 
+\newline \newline
+The mining sector has particularly concentrated concerns around air quality due to the numerous toxic aerosols both above and under ground. It has been shown that IoT systems can be implemented to assist in improving ventilation or warning miners of unhealthy working conditions. 
+\newline \newline
+The SACAQM has developed a novel air quality monitoring system that includes several sensor nodes to provide real-time air quality predictions. The system was developed for outdoor use and as such, there may be modifications required to apply this system in a mining context. For example, the system includes solar cells to power the sensor nodes which would not be feasible in underground. The network topology and parameters may not be sufficient to cope with the interference and obstructions in underground tunnels.
 
 \section{Research Question}
 [The research problem or question is clear, sufficiently narrow, and solvable or answerable
 within the constraints of the project.]
-\newline
+\newline \newline
+The research question for this project is: what modifications should be made to the AI\_r air quality monitoring system to ensure efficient and reliable sensor data transmission from underground mines?
 
-
-- Are there adjustments to the networks used that would need to be made for a mining environment
-- How can the parameters and features of the selected networks be optimized for performance in a mining context
-- Are the selected networks in the system sufficient for coping in a mining environment
 \section{Research Aims and Objectives}
 
-- reduction of data by analyzing sensors required for predictions
-- selection of radio parameters for optimized communication in mining environment
-- 
-
 \subsection{Research Aims}
-[The aim and objectives are relevantly related
-to the research problem or question.]
-\newline
 The aims of the research include:
 \begin{itemize}
     \item Determining whether the existing features of the AI\_r system are suitable to be used in a mining context or whether modifications to the architecture would need to be made
@@ -309,12 +308,30 @@ The aims of the research include:
 \subsection{Objectives}
 The objectives of the research include:
 \begin{itemize}
-    \item Determining whether the existing features of the AI\_r system are suitable to be used in a mining context or whether modifications to the architecture would need to be made
-    \item Determining what set of parameters can be adjusted to optimize the collection of sensor data in terms of power usage and transmission reliability
+    \item Analyzing existing research on IoT networks in underground contexts to determine whether the AI\_r system will be sufficient
+    \item Determining the most appropriate network topology and layout of sensor nodes that would provide reliable data transmissions from an underground mine
+    \item Performing tests with the sensor nodes to determine the most efficient network settings
 \end{itemize}
 
-\section{Research design}
-\section{Methods}
+- Are there adjustments to the networks used that would need to be made for a mining environment
+- How can the parameters and features of the selected networks be optimized for performance in a mining context
+- Are the selected networks in the system sufficient for coping in a mining environment
+
+\section{Methods and Research Design}
+As laid out in the objectives, the project includes both research based and experimental deliverables.
+\newline
+[The candidate shows a familiarity with the
+methods available for solving the research
+problem or answering the research question,
+and the chosen methods are well-motivated.]
+
+\subsection{Assessment of Architectural Changes to the AI\_r System}
+- reduction of data by analyzing sensors required for predictions
+
+\subsection{Testing for Optimized Network Parameters}
+- selection of radio parameters for optimized communication in mining environment
+- 
+
 - Analysis of research in various networks and performance within mining context
 - Development of a test scenario in the Wits mock mine shaft
 - Assess effects of varying LoRa parameters (SF, BW, Tx Power)
@@ -329,6 +346,9 @@ All tests were performed at maximum transmit power (20dBm) as distance can be ro
 
 
 \section{Limitations}
+Due to the time constraints and equipment available, limited testing and data collection will be possible.
+Access to a real mine for conducting tests will not be possible however, the features of varying mine types will be drawn from research conducted and basic tests can be performed in the Wits mock mine.
+\newline
 
 Testing considerations
 While the metal infrastructure may cause some sort of interference the testing is not indicative of a real shaft as we cannot measure the effect of reflections of the rough mine surface as well as any tilt effects of the tunnel
