@@ -125,7 +125,7 @@ Air pollution poses a great risk to human health. Millions of lives can be spare
 An industry that faces critical air quality issues is the mining industry. Miners are routinely exposed to harmful aerosols. Ventilation systems can be put in place however, to improve these conditions. A large proportion of the energy consumed in mining operations is due to these ventilation systems and thus an air quality monitoring system can be put in place to optimize the cost and safety of operating a mine\citep{Hercus_2022}.
 \newline
 
-The South African Consortium of Air Quality Monitoring (SACAQM), in partnership with various other organizations, developed an AI-powered IoT system of air quality monitoring sensors that measure and predict air quality in real time \citep{SACAQM}. This system was developed to make predictions for outdoor locations spanning over wide territories. The system was not designed for use in underground mines as as such, various analyses will need to be made to determine any necessary adaptions to be made to the system.
+The South African Consortium of Air Quality Monitoring (SACAQM), in partnership with various other organizations, developed an AI-powered IoT system of air quality monitoring sensors that measure and predict air quality in real time \citep{SACAQM}. This system was developed to make predictions for outdoor locations spanning over wide territories. The system was not designed for use in underground mines and as such, various analyses will need to be made to determine any necessary adaptations to be made to the system.
 \newline
 
 While several studies have been conducted on the performance of IoT systems in underground contexts, none is specific to the context of this system and with the system's specific components. This report will investigate what adaptations are required. Chapter 2 details the background and related work that has been conducted around the topics of IoT air quality monitoring and underground radio wave propagation, Chapter 3 outlines the research problem and stipulates the steps required to complete the research and, finally, Chapter 4 provides a schedule for the work to be undertaken.
@@ -276,7 +276,7 @@ Several studies have been conducted to assess and experiment with LoRa configura
     \item Application requirements \& Policies
 \end{itemize}
 
-\Vref{tab:performance-determinants} in the Appendix details some of these contributing factors and the effects of the LoRa parameters on the network performance.
+\Vref{fig:LoRaTablePerf} in the Appendix details some of these contributing factors and the effects of the LoRa parameters on the network performance.
 \newline
 
 Another large scale study was conducted by \cite{Liando2019KnownStudy} to experiment with the configurable parameters of LoRa and present what effects these have on the energy consumption and network capacity of the devices. Figure \ref{fig:LoRaTransmissionSpectogram} for example, demonstrates the resulting Packet Reception Ratio (PRR) for devices communicating in line-of-sight and non-line-of-sight environments with variable SFs.
@@ -379,28 +379,14 @@ Table \ref{tab:workScheduleTable} outlines the weekly activities that should be 
 \appendix
 \chapter{LoRa PHY Characteristics and Network Performance Effects}\label{app:LoraPerf}
 
-\Vref{tab:performance-determinants} below is an extract taken from \cite{Gkotsiopoulos2021PerformanceReview}.
+\Vref{fig:LoRaTablePerf} below is an extract taken from \cite{Gkotsiopoulos2021PerformanceReview}.
 
-\begin{longtable}{|c|p{6cm}|p{4cm}|c|}
-
-\hline
-\textbf{Characteristic} & \textbf{Negative effects on Performance} & \textbf{Positive effects on Performance} & \textbf{Importance} \\
-\hline
-SF selection & Higher values reduce the capacity because of the higher transmission times. Transmissions with the same SF (and the same channel) are subject to intra-SF interference when they overlap in time. Inter-SF interference may appear between transmissions with different SFs. & Parallel transmissions with different SFs are mostly orthogonal to each other. Thus, multiple SFs considerably increase capacity. & High \\
-\hline
-BW selection & Transmissions with the same or different BWs may collide with each other depending on their SF and on the received power. Higher BWs are more vulnerable to non-LoRa GFSK interference. & Higher values increase capactiy (at the expense of lower coverage ranges) because of the shorter transmission times. & Low \\
-\hline
-CR selection & There is a trade-off between reliability and transmission time which can lead to lower or to higher performance. In general, lower values (e.g., 4/8) reduce the capacity because of the higher transmission times. However, the communication becomes more resilient to errors. & Higher values (e.g., 4/5) increase capacity because of the lower transmission times. However, the communication becomes less resilient to errors. & Low \\
-\hline
-Transmit power & Signals with a low transmit power are in general more vulnerable (i.e. to path loss, shadowing and to interference) than stronger signals. However, the received power at the gateway plays a dominant role on the survival of a signal. & The transmit power can be adjusted to achieve longer ranges or better energy consumption. However, it can be also used (under some circumstances) to control the received power at the gateway and take advantage of the capture effect. Imperfect SF orthogonality can also be tackled by properly adjusting the transmit power. & Medium \\
-\hline
-Channel selection & Transmissions on the same channel are subject to intra- and inter-SF interference. In LoRaWAN, downlink transmissions in RW1 may collide with each other or with uplink transmissions on the same channel. In RW2, only downlink transmissions can collide with each other & The more the channels, the higher the maximum network capacity. However, the load must appropriately be balanced among all channels to get the maximum benefit. & High \\
-\hline
-Number of GWs & Single-gateway networks may suffer from low performance, especially in the presence of downlink traffic. & The use of multiple gateways is the most efficient way to increase the probability of packet delivery, and, thus, the network capacity in Aloha-based protocols such as LoRaWAN. & Very high \\
-\hline
-\caption{Performance Determinants in LoRa Networks}
-\label{tab:performance-determinants}
-\end{longtable}
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{images/GkotsLoRaPerf.PNG}
+	\caption{LoRa Network Performance Determinants, taken from \cite{Gkotsiopoulos2021PerformanceReview}}
+	\label{fig:LoRaTablePerf}
+\end{figure}
 
 \nocite{*}
 
