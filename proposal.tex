@@ -118,15 +118,16 @@ This report examines the practicality of extending the AI\_r system into a minin
 \pagenumbering{arabic}
 
 \chapter{Introduction}
-[Introduction]
+Air pollution poses a great risk to human health. Millions of lives can be spared by reducing air pollution as it has been shown to increase the risk of lung cancer, heart disease, strokes and other respiratory diseases \citep{WHO_2022}. Having access to air quality measurements allows for the better management and prevention of air pollution. Investments and policies can be implemented to help improve conditions that do not meet regulatory guidelines, such as the WHO Global air quality guidelines (AQG).
+\newline
 
-[brief on air quality]
+An industry that faces critical air quality issues is the mining industry. Miners are routinely exposed to harmful aerosols. Ventilation systems can be put in place however, to improve these conditions. A large proportion of the energy consumed in mining operations is due to these ventilation systems and thus an air quality monitoring system can be put in place to optimize the cost and safety of operating a mine\citep{Hercus_2022}.
+\newline
 
-[brief on AI\_r system developed]
+The South African Consortium of Air Quality Monitoring (SACAQM), in partnership with various other organizations, developed an AI-powered IoT system of air quality monitoring sensors that measure and predict air quality in real time \citep{SACAQM}. This system was developed to make predictions for outdoor locations spanning over wide territories. The system was not designed for use in underground mines as as such, various analyses will need to be made to determine any necessary adaptions to be made to the system.
+\newline
 
-[importance of extending to mining and gap in current research]
-
-[explanation of sections]
+While several studies have been conducted on the performance of IoT systems in underground contexts, none is specific to the context of this system and with the system's specific components. This report will investigate what adaptations are required. Chapter 2 details the background and related work that has been conducted around the topics of IoT air quality monitoring and underground radio wave propagation, Chapter 3 outlines the research problem and stipulates the steps required to complete the research and, finally, Chapter 4 provides a schedule for the work to be undertaken.
 
 \chapter{Background and Related Work}
 
@@ -170,7 +171,6 @@ Figure \ref{fig:NetworkTopology} shows a diagram of the two layers combined. The
 	\label{fig:NetworkTopology}
 \end{figure}
 
-\newline
 There are two types of sensor nodes included in the system. The master nodes are based on Nordic Semiconductor nRF5160 SiPs and by default include the following sensor types:
 \begin{itemize}
     \item ambient temperature
