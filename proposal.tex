@@ -14,6 +14,7 @@
 \usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{parskip}
+\usepackage{longtable}
 \usepackage[all]{nowidow}
 \setnoclub[2]
 \setnowidow[2]
@@ -66,7 +67,7 @@
 \begin{center}
   \vfill
   {
-  \huge \bf \textsc{The Adaption of an IoT Air Quality Monitoring System for use in Underground Mines}
+  \huge \bf \textsc{The Adaptation of an IoT Air Quality Monitoring System for use in Underground Mines}
   \vspace{50pt}\\
   \large School of Computer Science \& Applied Mathematics\\
   \large University of the Witwatersrand\\[20pt]
@@ -182,8 +183,10 @@ There are two types of sensor nodes included in the system. The master nodes are
     \item PM2.5 (high quality)
     \item PM10
 \end{itemize}
+
 These measurements require more power and the selection of sensor types per node can be adapted to suit the requirements of the monitoring system. The nodes include an internally housed battery that is expected to power the node for up to one year. These nodes are connected to the cloud via 4G networks.
 \newline
+
 The slave sensor nodes are based on the Nordic Semiconductor nRF52840 System on Chip (SoC) and include less accurate PM2.5 sensors. They connect to other master nodes through LoRa (low-power, long range radio communication) and are solar powered.
 \newline 
 
@@ -196,21 +199,8 @@ Figure \ref{fig:SensorNodes} shows a computer-generated drawing of one of these 
 	\label{fig:SensorNodes}
 \end{figure}
 
-
 \subsection{Wireless Communication}
-The IoT network used in the AI\_r system is LoRa, which is a low-power, long range radio communication protocol. This section will examine how this protocol is implemented and what are the possible
-
-\subsubsection{LoRa}
-LoRa 
-- physical proprietary radio communication technique
-- based on spread spectrum modulation techniques derived from chirp spread spectrum (CSS)
-
-LoRaWAN 
-- communication protocol and system architecture
-- MAC layer protocol
-is a Low Power Wide Area Network (LPWAN)
-
-Together - LoRa and LoRaWAN define a Low Power, Wide Area networking protocl
+The IoT communication protocol used in the AI\_r system is LoRa, which is a low-power, long range radio communication protocol. LoRa is a physical radio communication technique, based on the spread spectrum modulation technique derived from chirp spread spectrum (CSS)\citep{Semtech_2023}. LoRaWAN is the communication protocol and specifies the system architecture. Together, LoRa and LoRaWAN form a Low Power Wide Area Network (LPWAN) protocol. Figure \ref{fig:LoRaRange} shows an indicational diagram of where LoRa fits in the realm of wireless communication methods.
 
 \begin{figure}[ht]
 	\centering
@@ -219,10 +209,10 @@ Together - LoRa and LoRaWAN define a Low Power, Wide Area networking protocl
 	\label{fig:LoRaRange}
 \end{figure}
 
+The AI\_r system uses the sensor nodes in a mesh network. Mesh networks have an arbitrary topology and each node is independent from one another yet connects to the others with multiple redundant nodes. The data intended for a given node is propagated through the nodes until the addressed node is reached. Due to these features, mesh networks are self-configurable and self-healing.
+\newline
 
-
-A full packet is comprised of upchirps and downchirps \citep{Liando2019KnownStudy}
-Text \Cref{fig:LoRaTransmissionSpectogram}
+LoRa communication involves the transmission of packets of data. A full packet is comprised of upchirps and downchirps \citep{Liando2019KnownStudy}. A 'chirp' is a modulated signal that carries data. \Cref{fig:LoRaTransmissionSpectogram} shows a spectrogram of one of these packets of data.
 
 \begin{figure}[ht]
 	\centering
@@ -231,7 +221,10 @@ Text \Cref{fig:LoRaTransmissionSpectogram}
 	\label{fig:LoRaTransmissionSpectogram}
 \end{figure}
 
-\cite{Liando2019KnownStudy} defines four main parameters that can be used to achieve trade-offs between communication distances, data rate and power consumptions. These include:
+The first half of the figure shows the 'upchirps' where the frequency moves from $f_{min}$ (the minimum frequency) to $f_{max}$ (the maximum frequency) and is increasing over time. After this, the 'downchirp' is shown (annotated with 'SDF': Start Frame Delimiter) and goes from $f_{max}$ to $f_{min}$ and finally the modulated chirps follow that contain the data bits.
+\newline
+
+\cite{Liando2019KnownStudy} defines four main parameters that can be used to achieve trade-offs between communication distances, data rate and power consumption. These include:
 \begin{itemize}
     \item Spreading Factor (SF)
     \item Bandwidth
@@ -244,7 +237,7 @@ The configurable options of these parameters are shown in Table \ref{tab:LoRaPar
 	\centering
 	\caption{LoRa Chipset Configuration Options as Described in \cite{SemtechDatasheet}}
 	\label{tab:LoRaParams}
-\begin{tabular}{cc}
+\begin{tabular}{cl}
 	\hline
 	Parameter & Options\\
 	\hline\hline 
@@ -256,25 +249,37 @@ The configurable options of these parameters are shown in Table \ref{tab:LoRaPar
 \end{table*}
 
 \textbf{Spreading Factor (SF)} \newline
-The spreading factor affects the angle of the chirps and remains consistent throught the packet. When a system contains a constant frequency bandwidth, this factor will determine the final data rate \citep{Liando2019KnownStudy}. The highest data rate supported, at the time of writing, is SF6 which, for successful demodulation, requires the highest signal-to-noise (SNR) ratio. SF12 supports the lowest data rate but correspondingly and for the same transmission power requires the lowest SNR. By incrementing the SF and assuming all other parameters remain constant, the time taken to transmit a chirp is approximately doubled. A longer chirp duration means that receivers have more time to sample the signal power, resulting in a higher SNR.
+The spreading factor affects the angle of the chirps and remains consistent throughout the packet. When a system contains a constant frequency bandwidth, this factor will determine the final data rate \citep{Liando2019KnownStudy}. The highest data rate supported at the time of writing is SF6 which, for successful demodulation, requires the highest signal-to-noise (SNR) ratio. SF12 supports the lowest data rate but correspondingly and for the same transmission power requires the lowest SNR. By incrementing the SF and assuming all other parameters remain constant, the time taken to transmit a chirp is approximately doubled. A longer chirp duration means that receivers have more time to sample the signal power, resulting in a higher SNR.
 \newline
 
 \textbf{Bandwidth (BW)} \newline
 Bandwidth determines the width of the transmitted signal. The duration of a chirp, $T_{sym}$ can be defined as:
 \[ T_{sym} = \frac{2^{SF}}{BW} \citep{LoRaModulation} \] 
+
 Where each chirp consists of $2^{SF}$ number of RF chips carrying SF number of bits. $T_{sym}$ is measured as a chip per Hz of BW.
 Therefore, the Bandwidth plays a role in the determination of the chirp duration.
 \newline
 
 \textbf{Transmission Power (Tx Pow)} \newline
 The increase of transmission power corresponds to a better chance of the signal surviving attenuation caused by the environment however, it directly affects the amount of power drawn.
-\newline \newline
 
+\section{Related Work}
 
-Recommendation: SF settings SF7 to SF12 and BW 125, 250 and 500kHz \cite{SemtechDatasheet}
+\subsection{Analyses of LoRa Networks}
+Several studies have been conducted to assess and experiment with LoRa configuration to optimize systems with respect to transmission reliability and/or power consumption. \cite{Gkotsiopoulos2021PerformanceReview} performed a review of literature on LoRa-based networks and categorized the main contributing factors to network performance. These categories include:
 
-\cite{Gkotsiopoulos2021PerformanceReview} "One of the main issues in LoRa networks is how many end-devices can be reporting efficiently while meet ing the requirements set by the application they support. This is known as the capacity metric and it is affected by many network parameters and various factors."
-"In the LoRaWAN specification, the specified data rates (DR0-DR7) indicate the allowed combinations of BW and SF"
+\begin{itemize}
+    \item PHY characteristics \& Phenomena
+    \item Deployment features \& Hardware selection
+    \item EDs transmission settings \& Features
+    \item LoRa MAC protocols
+    \item Application requirements \& Policies
+\end{itemize}
+
+\Vref{tab:performance-determinants} in the Appendix details some of these contributing factors and the effects of the LoRa parameters on the network performance.
+\newline
+
+Another large scale study was conducted by \cite{Liando2019KnownStudy} to experiment with the configurable parameters of LoRa and present what effects these have on the energy consumption and network capacity of the devices. Figure \ref{fig:LoRaTransmissionSpectogram} for example, demonstrates the resulting Packet Reception Ratio (PRR) for devices communicating in line-of-sight and non-line-of-sight environments with variable SFs.
 
 \begin{figure}[ht]
 	\centering
@@ -283,53 +288,12 @@ Recommendation: SF settings SF7 to SF12 and BW 125, 250 and 500kHz \cite{Semtech
 	\label{fig:LoRaTransmissionSpectogram}
 \end{figure}
 
-\^ communication is fine up to 9km for line-of-sight environments but propagation is impacted when obstructed
-
-\subsubsection{Mesh Networks}
-
-- self-configurable and selfhealing
-- data intended for given node is propagated along network until addressed node is reached
-- each node independent of others but connected to others via multiple redundant nodes
-- arbitrary topology
-- "peer-to-peer" fashion (uses neighbours as routers to transmit traffic back and forth"
-- 
-
-\section{Related Work}
-
-
-\subsection{Analyses of LoRa Networks}
-Performance Determinants in LoRa Networks: A Literature Review \cite{Gkotsiopoulos2021PerformanceReview}
-
-Known and Unknown Facts of LoRa Experiences from a Large scale Measurement Study \cite{Liando2019KnownStudy}
 
 \subsection{IoT Systems in Underground Contexts}
+Several studies have too been conducted on IoT networks in underground environments. \cite{Villarim2022EvaluationApplications} conducted tests for transmissions from under to above ground and found that data packets are lost when increasing the depth of the transmitting device. \cite{Ranjan2018DeepSense:Workings} performs real tests to determine radio signal behaviour in metal and non-metal underground mines. \cite{Jo_Khan_2018}, \cite{Zhu2019MonitoringNetwork} and \cite{Ali2022ImprovingSystem} use ZigBee and WiFi based IoT systems to implement monitoring networks while \cite{Ali2022ImprovingSystem} additionally connects the sensors to a control system that activates fans and triggers surface alerts to track the low cost of opening alternative coal.
+\newline
 
--- Underground simulation and modeling
-Tests conducted for transmissions from underground to surface: \citep{Villarim2022EvaluationApplications}
-It was found that the transmission loses data packets when increasing the depth of the device
-
-simulation study that provide LoRa performance in mining area with strong multipath conditions for different spread factors (SF). \citep{Emmanuel2019LoRaMines}
-The chirp pulses are very resistant against disturbances. As per the [3], the CSS is immune against multipath signals due to the broadband chirp pulses. However physical phenomena, like multipath reflection, scattering, and diffraction along the mines’ rough walls will affect the propagation of electromagnetic waves [7]. Therefore, the effect of strong multipath signals to LoRa system is analyzed in this paper
-Comparison of Bit Error Rate (BER) to SNR for SFs 6-10 with Additive White Gaussian Noise (AWGN) to simulate 
-\citep{MineRadioPredictionModel3} measured the LoRa PERs in test chambers and the test chambers are designed to simulate the AWGN and multipath propagation environments
-\citep{Hrovat2014ATunnels} -- propagation modeling for tunnels
-The radio propagation in mines may be affected by either system parameters (e.g., radio signal frequency, antenna radiation pattern, position of transceivers) or distinctive features of different mines (mine geometry, miming methods, obstacles and their positions, humidity, temperature, noise, wall roughness, electromagnetic properties of walls, etc.
-
--- Papers doing similar things:
- \cite{Jo_Khan_2018} -- Arduino, ZigBee
- \cite{Zhu2019MonitoringNetwork} -- zigbee, wearable
- wi-fi, incorporation of control system to activate fans in the Pittsburgh Investigation of Mine, and trigger a surface alert to track the low cost of opening alternative coal: \cite{Ali2022ImprovingSystem} 
-
-Applications of wireless sensor networks to improve occupational and health in underground mines \cite{Sadeghi2022ApplicationsMines}
-
-DeepSense: Sensing the Radio Signal Behavior in Metal and Non-Metal Underground Mine Workings \cite{Ranjan2018DeepSense:Workings}
-
-Prediction of network propagation in confined environments:
-\citep{MineRadioPredictionModel1}
-\citep{MineRadioPredictionModel2}
-
-\subsection{Conclusion}
-Despite there being several studies that have extended IoT sensor networks in a mining context, none has examined the 
+Some studies have been conducted to model the radio wave propagation in mines (\citep{MineRadioPredictionModel1}, \citep{MineRadioPredictionModel2},  \citep{MineRadioPredictionModel3}, \citep{Hrovat2014ATunnels}...) and studies such as done by \cite{Emmanuel2019LoRaMines} have used these models to make calculated predictions of network behaviour. \cite{MineRadioPredictionModel3} measured the LoRa PERs in test chambers where the test chambers are designed to simulate the Additive White Gaussian Noise (AWGN) and multipath propagation environments. \cite{Hrovat2014ATunnels} investigated radio propagation in tunnels. Radio propagation in mines can be affected by features of the mine, such as the geometry, mining methods, humidity, wall roughness, temperature, etc. or the parameters of the system, such as: radio signal frequency, position of transceivers etc. The comparison of Bit Error Rate (BER) to SNR can be assessed as a performance determinant\citep{Emmanuel2019LoRaMines}.
 
 \chapter{Research and Methodology}
 This section establishes the research question for the project and from which, objectives and deliverables are derived. A methodology for achieving these deliverables is drawn up and the limitations of the project are then discussed.
@@ -412,6 +376,31 @@ Table \ref{tab:workScheduleTable} outlines the weekly activities that should be 
 \end{tabular} 
 \end{table*}
 
+\appendix
+\chapter{LoRa PHY Characteristics and Network Performance Effects}\label{app:LoraPerf}
+
+\Vref{tab:performance-determinants} below is an extract taken from \cite{Gkotsiopoulos2021PerformanceReview}.
+
+\begin{longtable}{|c|p{6cm}|p{4cm}|c|}
+
+\hline
+\textbf{Characteristic} & \textbf{Negative effects on Performance} & \textbf{Positive effects on Performance} & \textbf{Importance} \\
+\hline
+SF selection & Higher values reduce the capacity because of the higher transmission times. Transmissions with the same SF (and the same channel) are subject to intra-SF interference when they overlap in time. Inter-SF interference may appear between transmissions with different SFs. & Parallel transmissions with different SFs are mostly orthogonal to each other. Thus, multiple SFs considerably increase capacity. & High \\
+\hline
+BW selection & Transmissions with the same or different BWs may collide with each other depending on their SF and on the received power. Higher BWs are more vulnerable to non-LoRa GFSK interference. & Higher values increase capactiy (at the expense of lower coverage ranges) because of the shorter transmission times. & Low \\
+\hline
+CR selection & There is a trade-off between reliability and transmission time which can lead to lower or to higher performance. In general, lower values (e.g., 4/8) reduce the capacity because of the higher transmission times. However, the communication becomes more resilient to errors. & Higher values (e.g., 4/5) increase capacity because of the lower transmission times. However, the communication becomes less resilient to errors. & Low \\
+\hline
+Transmit power & Signals with a low transmit power are in general more vulnerable (i.e. to path loss, shadowing and to interference) than stronger signals. However, the received power at the gateway plays a dominant role on the survival of a signal. & The transmit power can be adjusted to achieve longer ranges or better energy consumption. However, it can be also used (under some circumstances) to control the received power at the gateway and take advantage of the capture effect. Imperfect SF orthogonality can also be tackled by properly adjusting the transmit power. & Medium \\
+\hline
+Channel selection & Transmissions on the same channel are subject to intra- and inter-SF interference. In LoRaWAN, downlink transmissions in RW1 may collide with each other or with uplink transmissions on the same channel. In RW2, only downlink transmissions can collide with each other & The more the channels, the higher the maximum network capacity. However, the load must appropriately be balanced among all channels to get the maximum benefit. & High \\
+\hline
+Number of GWs & Single-gateway networks may suffer from low performance, especially in the presence of downlink traffic. & The use of multiple gateways is the most efficient way to increase the probability of packet delivery, and, thus, the network capacity in Aloha-based protocols such as LoRaWAN. & Very high \\
+\hline
+\caption{Performance Determinants in LoRa Networks}
+\label{tab:performance-determinants}
+\end{longtable}
 
 \nocite{*}
 
