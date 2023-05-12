@@ -66,7 +66,7 @@
 \begin{center}
   \vfill
   {
-  \huge \bf \textsc{The Optimization of Wireless Communication in an Air Quality Monitoring System for use in Underground Mines}
+  \huge \bf \textsc{The Adaption of an IoT Air Quality Monitoring System for use in Underground Mines}
   \vspace{50pt}\\
   \large School of Computer Science \& Applied Mathematics\\
   \large University of the Witwatersrand\\[20pt]
@@ -101,7 +101,7 @@ This work has not been submitted to any other university, or for any other degre
 \begin{abstract}
 Air quality monitoring is an important aspect of ensuring safe and healthy living and working environments. Readings and predictions of air quality can assist governing bodies in applying appropriate mitigation steps and policies to reduce air pollution where necessary. The South African Consortium of Air Quality Monitoring (SACAQM) developed a low cost monitoring system, 'AI\_r', that comprises of IoT sensor nodes connected to the cloud. The readings of these are processed with machine learning algorithms to provide accurate real-time predictions. 
 \newline \newline
-This report examines the practicality of extending the AI\_r system into a mining context and analyzes the methods that can be employed to optimize the wireless communication methods and power use of the system.
+This report examines the practicality of extending the AI\_r system into a mining context and analyzes the methods that can be employed to optimize the wireless communication protocols within the system.
 \end{abstract}
 
 \phantomsection
@@ -137,7 +137,7 @@ This chapter details the existing project: 'AI\_r' for which this research is an
 \subsection{Air Quality Monitoring}
  Air pollution has been linked to many health impediments such as heart disease, strokes, lung cancer and both acute and chronic respiratory diseases \citep{WHO_2022}. The World Health Organization (WHO) has created a set of air quality guidelines (AQG) that stipulate the thresholds and limits for air pollutants that are known to create risks to ones health. \cite{WHO_2022} has claimed that in 2019, 99\% of the world's population was living in an environment with air quality below these regulatory guidelines. Policies and investments can be made by governing bodies to mitigate air pollution by supporting better practices in power generation, transportation, industry and waste management.
  \newline \newline
-Many harmful aerosols, including: quarts, silica, arsenic, diesel and particulate matter are generated during the mining process and this affects miners both under and above ground\citep{Hercus_2022}. Real-time, accurate air quality measurements are critical to assist in monitoring whether exposure is above regulatory limits. These readings can be used to warn miners or can indicate the need for improved ventilation and mining practices. It is estimated that 50\% of the energy consumed in mining operations is due to the ventilation systems\citep{Hercus_2022}. Integrating air quality measurements into an automated ventilation control system could provide a cost-effective method of ensuring a healthy supply of fresh air to the miners. 
+Many harmful aerosols, including: quarts, silica, arsenic, diesel and particulate matter are generated during the mining process and this affects miners both under and above ground\citep{Hercus_2022}. Real-time, accurate air quality measurements are critical to assist in monitoring whether exposure is above regulatory limits. These readings can be used to warn miners or can indicate the need for improved ventilation and mining practices. It is estimated that 50\% of the energy consumed in mining operations is due to the ventilation systems\citep{Hercus_2022}. Integrating air quality measurements into an automated ventilation control system could provide a cost-effective method of ensuring a healthy supply of fresh air to the miners. Operational health and safety in underground mines can be improved substantially by monitoring conditions such as temperature, gas, noise and dust \citep{Sadeghi2022ApplicationsMines}.
 
 \subsection{The SACAQM AI\_r System}
 \subsubsection{Purpose}
@@ -198,8 +198,19 @@ Figure \ref{fig:SensorNodes} shows a computer-generated drawing of one of these 
 
 
 \subsection{Wireless Communication}
-[Wireless communication methods used in the system are...]
+The IoT network used in the AI\_r system is LoRa, which is a low-power, long range radio communication protocol. This section will examine how this protocol is implemented and what are the possible
+
 \subsubsection{LoRa}
+LoRa 
+- physical proprietary radio communication technique
+- based on spread spectrum modulation techniques derived from chirp spread spectrum (CSS)
+
+LoRaWAN 
+- communication protocol and system architecture
+- MAC layer protocol
+is a Low Power Wide Area Network (LPWAN)
+
+Together - LoRa and LoRaWAN define a Low Power, Wide Area networking protocl
 
 \begin{figure}[ht]
 	\centering
@@ -208,6 +219,9 @@ Figure \ref{fig:SensorNodes} shows a computer-generated drawing of one of these 
 	\label{fig:LoRaRange}
 \end{figure}
 
+
+
+A full packet is comprised of upchirps and downchirps \citep{Liando2019KnownStudy}
 Text \Cref{fig:LoRaTransmissionSpectogram}
 
 \begin{figure}[ht]
@@ -217,11 +231,50 @@ Text \Cref{fig:LoRaTransmissionSpectogram}
 	\label{fig:LoRaTransmissionSpectogram}
 \end{figure}
 
+\cite{Liando2019KnownStudy} defines four main parameters that can be used to achieve trade-offs between communication distances, data rate and power consumptions. These include:
+\begin{itemize}
+    \item Spreading Factor (SF)
+    \item Bandwidth
+    \item Transmission Power (Tx Power)
+    \item Channel
+\end{itemize}
 
-\begin{enumerate}
-    \item Network Topologies
-    \item Performance Metrics
-\end{enumerate}
+The configurable options of these parameters are shown in Table \ref{tab:LoRaParams} and each will be explained in detail.
+\begin{table*}[!htbp]
+	\centering
+	\caption{LoRa Chipset Configuration Options as Described in \cite{SemtechDatasheet}}
+	\label{tab:LoRaParams}
+\begin{tabular}{cc}
+	\hline
+	Parameter & Options\\
+	\hline\hline 
+	SF & 6, 7, 8, 9, 10, 11, 12 \\ 
+	BW (kHz) & 7.8, 10.4, 15.6, 20.8, 31.2, 41.7, 62.5, 125, 250, 500 \\ 
+    CR & 4/5, 4/6, 4/7, 4/8 \\ 
+	\hline
+\end{tabular} 
+\end{table*}
+
+\textbf{Spreading Factor (SF)} \newline
+The spreading factor affects the angle of the chirps and remains consistent throught the packet. When a system contains a constant frequency bandwidth, this factor will determine the final data rate \citep{Liando2019KnownStudy}. The highest data rate supported, at the time of writing, is SF6 which, for successful demodulation, requires the highest signal-to-noise (SNR) ratio. SF12 supports the lowest data rate but correspondingly and for the same transmission power requires the lowest SNR. By incrementing the SF and assuming all other parameters remain constant, the time taken to transmit a chirp is approximately doubled. A longer chirp duration means that receivers have more time to sample the signal power, resulting in a higher SNR.
+\newline
+
+\textbf{Bandwidth (BW)} \newline
+Bandwidth determines the width of the transmitted signal. The duration of a chirp, $T_{sym}$ can be defined as:
+\[ T_{sym} = \frac{2^{SF}}{BW} \citep{LoRaModulation} \] 
+Where each chirp consists of $2^{SF}$ number of RF chips carrying SF number of bits. $T_{sym}$ is measured as a chip per Hz of BW.
+Therefore, the Bandwidth plays a role in the determination of the chirp duration.
+\newline
+
+\textbf{Transmission Power (Tx Pow)} \newline
+The increase of transmission power corresponds to a better chance of the signal surviving attenuation caused by the environment however, it directly affects the amount of power drawn.
+\newline \newline
+
+
+Recommendation: SF settings SF7 to SF12 and BW 125, 250 and 500kHz \cite{SemtechDatasheet}
+
+\cite{Gkotsiopoulos2021PerformanceReview} "One of the main issues in LoRa networks is how many end-devices can be reporting efficiently while meet ing the requirements set by the application they support. This is known as the capacity metric and it is affected by many network parameters and various factors."
+"In the LoRaWAN specification, the specified data rates (DR0-DR7) indicate the allowed combinations of BW and SF"
 
 \begin{figure}[ht]
 	\centering
@@ -232,53 +285,51 @@ Text \Cref{fig:LoRaTransmissionSpectogram}
 
 \^ communication is fine up to 9km for line-of-sight environments but propagation is impacted when obstructed
 
+\subsubsection{Mesh Networks}
 
-Figure captions are at the bottom. Table title are at the top of the table as seen in \Vref{tab:tab1}. There is a package called BookTabs which is \textit{way} better for tables and you should learn how to use that instead.
-
-\begin{table}[p]
-	\centering
-	\caption{LoRa Chipset Configuration Options as Described in \cite{SemtechDatasheet}}
-	\label{tab:tab1}
-\begin{tabular}{cc}
-	\hline
-	Parameter & Options\\
-	\hline\hline 
-	SF & 6, 7, 8, 9, 10, 11, 12 \\ 
-	BW (kHz) & 7.8, 10.4, 15.6, 20.8, 31.2, 41.7, 62.5, 125, 250, 500 \\ 
-    CR & 4/5, 4/6, 4/7, 4/8 \\ 
-    IH & True or False \\ 
-    DE & True of False (recommended True for $T_{sym} > 16ms$) \\ 
-    IH & True (uplink) or False (downlink) \\ 
-    IH & 0-255 Bytes \\ 
-    IH & 6-65,535 symbols \\ 
-	\hline
-\end{tabular} 
-\end{table}
-
-Recommendation: SF settings SF7 to SF12 and BW 125, 250 and 500kHz \cite{SemtechDatasheet}
-
-\subsection{Mining Environment}
-\subsubsection{Typical Mining Architectures}
-\subsubsection{Network Interference in Mining Context}
+- self-configurable and selfhealing
+- data intended for given node is propagated along network until addressed node is reached
+- each node independent of others but connected to others via multiple redundant nodes
+- arbitrary topology
+- "peer-to-peer" fashion (uses neighbours as routers to transmit traffic back and forth"
+- 
 
 \section{Related Work}
 
-\subsubsection{Analyses of LoRa Networks}
+
+\subsection{Analyses of LoRa Networks}
 Performance Determinants in LoRa Networks: A Literature Review \cite{Gkotsiopoulos2021PerformanceReview}
 
 Known and Unknown Facts of LoRa Experiences from a Large scale Measurement Study \cite{Liando2019KnownStudy}
 
-\subsubsection{IoT Systems in Underground Contexts}
+\subsection{IoT Systems in Underground Contexts}
 
-An Internet of Things System for Underground Mine Air Quality Pollutant Prediction Based on Azure Machine Learning \cite{Jo_Khan_2018} -- Arduino, ZigBee
+-- Underground simulation and modeling
+Tests conducted for transmissions from underground to surface: \citep{Villarim2022EvaluationApplications}
+It was found that the transmission loses data packets when increasing the depth of the device
 
-Monitoring System for Coal Mine Safety Based on Wireless Sensor Network \cite{Zhu2019MonitoringNetwork} -- zigbee
+simulation study that provide LoRa performance in mining area with strong multipath conditions for different spread factors (SF). \citep{Emmanuel2019LoRaMines}
+The chirp pulses are very resistant against disturbances. As per the [3], the CSS is immune against multipath signals due to the broadband chirp pulses. However physical phenomena, like multipath reflection, scattering, and diffraction along the mines’ rough walls will affect the propagation of electromagnetic waves [7]. Therefore, the effect of strong multipath signals to LoRa system is analyzed in this paper
+Comparison of Bit Error Rate (BER) to SNR for SFs 6-10 with Additive White Gaussian Noise (AWGN) to simulate 
+\citep{MineRadioPredictionModel3} measured the LoRa PERs in test chambers and the test chambers are designed to simulate the AWGN and multipath propagation environments
+\citep{Hrovat2014ATunnels} -- propagation modeling for tunnels
+The radio propagation in mines may be affected by either system parameters (e.g., radio signal frequency, antenna radiation pattern, position of transceivers) or distinctive features of different mines (mine geometry, miming methods, obstacles and their positions, humidity, temperature, noise, wall roughness, electromagnetic properties of walls, etc.
 
-Improving coal mine safety with internet of things (IoT) based Dynamic Sensor Information Control System \cite{Ali2022ImprovingSystem} 
+-- Papers doing similar things:
+ \cite{Jo_Khan_2018} -- Arduino, ZigBee
+ \cite{Zhu2019MonitoringNetwork} -- zigbee, wearable
+ wi-fi, incorporation of control system to activate fans in the Pittsburgh Investigation of Mine, and trigger a surface alert to track the low cost of opening alternative coal: \cite{Ali2022ImprovingSystem} 
 
 Applications of wireless sensor networks to improve occupational and health in underground mines \cite{Sadeghi2022ApplicationsMines}
 
 DeepSense: Sensing the Radio Signal Behavior in Metal and Non-Metal Underground Mine Workings \cite{Ranjan2018DeepSense:Workings}
+
+Prediction of network propagation in confined environments:
+\citep{MineRadioPredictionModel1}
+\citep{MineRadioPredictionModel2}
+
+\subsection{Conclusion}
+Despite there being several studies that have extended IoT sensor networks in a mining context, none has examined the 
 
 \chapter{Research and Methodology}
 This section establishes the research question for the project and from which, objectives and deliverables are derived. A methodology for achieving these deliverables is drawn up and the limitations of the project are then discussed.
@@ -291,9 +342,6 @@ The mining sector has particularly concentrated concerns around air quality due 
 The SACAQM has developed a novel air quality monitoring system that includes several sensor nodes to provide real-time air quality predictions. The system was developed for outdoor use and as such, there may be modifications required to apply this system in a mining context. For example, the system includes solar cells to power the sensor nodes which would not be feasible in underground. The network topology and parameters may not be sufficient to cope with the interference and obstructions in underground tunnels.
 
 \section{Research Question}
-[The research problem or question is clear, sufficiently narrow, and solvable or answerable
-within the constraints of the project.]
-\newline \newline
 The research question for this project is: what modifications should be made to the AI\_r air quality monitoring system to ensure efficient and reliable sensor data transmission from underground mines?
 
 \section{Research Aims and Objectives}
@@ -313,71 +361,42 @@ The objectives of the research include:
     \item Performing tests with the sensor nodes to determine the most efficient network settings
 \end{itemize}
 
-- Are there adjustments to the networks used that would need to be made for a mining environment
-- How can the parameters and features of the selected networks be optimized for performance in a mining context
-- Are the selected networks in the system sufficient for coping in a mining environment
-
 \section{Methods and Research Design}
 As laid out in the objectives, the project includes both research based and experimental deliverables.
-\newline
-[The candidate shows a familiarity with the
-methods available for solving the research
-problem or answering the research question,
-and the chosen methods are well-motivated.]
 
 \subsection{Assessment of Architectural Changes to the AI\_r System}
-- reduction of data by analyzing sensors required for predictions
+The sensor nodes include a number of sensor types all of which may not be necessary in the calculation of air quality monitoring. An evaluation should be conducted that compares the results of the Machine Learning models and weighted value of each sensor type to the power draw and additional transmission data required. It can then be determined whether any of the sensor types can be omitted from the nodes to reduce the power and transmission requirements.
+
+\subsection{Modeling Underground Interference}
+A theoretical analysis should be devised that uses previous studies modeling the nature of radio wave propagation in underground mines to devise a prediction of the most effective layout of sensor nodes as well as the configurable parameters to use in the nodes.
 
 \subsection{Testing for Optimized Network Parameters}
-- selection of radio parameters for optimized communication in mining environment
-- 
-
-- Analysis of research in various networks and performance within mining context
-- Development of a test scenario in the Wits mock mine shaft
-- Assess effects of varying LoRa parameters (SF, BW, Tx Power)
-- Optimization in terms of power - solar cells will not be feasible in mining context
-- SNR performance and battery most important
-
-RFM95W LoRa radio with Arduino readings taken on PC of RSSI and SNR
-
-The nodes were tested with every viable bandwidth and spreading factor i.e. 125kHz & 250kHz with SF7-12
-They were tested for received power RSSI and the SNR of the received signal
-All tests were performed at maximum transmit power (20dBm) as distance can be roughly extrapolated from there and ultimately the power consumption is not high.
+Real life tests should be performed to confirm the predictions made in the theoretical analysis. While access to a real mine is not feasible for this study, a test setup can be created in the University of Witwatersrand mock mine shaft and the results extrapolated upon. The effects of varying the LoRa parameters: SF, BW and Tx Pow will be evaluated to determine the best received power (RSSI) and Signal to Noise Ratio (SNR) results.
+\newline
+For these tests, a RFM95W LoRa radio will be connected to an Arduino microcontroller to take readings of the RSSI and SNR from a sensor transmitting test readings.
 
 
 \section{Limitations}
 Due to the time constraints and equipment available, limited testing and data collection will be possible.
 Access to a real mine for conducting tests will not be possible however, the features of varying mine types will be drawn from research conducted and basic tests can be performed in the Wits mock mine.
-\newline
-
-Testing considerations
-While the metal infrastructure may cause some sort of interference the testing is not indicative of a real shaft as we cannot measure the effect of reflections of the rough mine surface as well as any tilt effects of the tunnel
-Exact dimensions in terms of height unknown so unable to make any distance related extrapolations
-Since Shafts are usually somewhat straight and directional, setting up Line of Sight for the nodes is realistic.
 
 \chapter{Schedule of Work}
-[The schedule of work is sufficiently detailed
-and is feasible
-]
-\section{Schedule of Work}
-Phases:
-
-
-\begin{table}[p]
+Table \ref{tab:workScheduleTable} outlines the weekly activities that should be undertaken to fulfil the requirements of this project.
+\begin{table*}[!htbp]
 	\centering
 	\caption{Proposed Schedule of Work for Capstone Project}
 	\label{tab:workScheduleTable}
-\begin{tabular}{ccc}
+\begin{tabular}{| r | l | c |}
 	\hline
-	Week & Activity & Hours\\
+	\textbf{Week} & \textbf{Activity} & \textbf{Hours}\\
 	\hline\hline 
-	July 17 & activity & 0 \\ 
-	24 & activity & 0 \\ 
-    31 & activity & 0 \\ 
+	July 17 & Gather test equipment and ML results  & 10 \\ 
+	24 & Analysis of the ML results for unnecessary sensor inclusions & 20 \\ 
+    31 & Devise estimations of the most efficient node layout and parameters & 20 \\ 
     \hline
-    Aug 7 & activity & 0 \\ 
-    14 & activity & 0 \\ 
-    21 & activity & 0 \\ 
+    Aug 7 & Plan experiments and prepare test data & 20 \\ 
+    14 & Perform experiments in the mock mine shaft and record results & 20 \\ 
+    21 & Analyze test results and draw conclusions & 20 \\ 
     28 & Report write-up & 20 \\ 
     \hline
     Sep 4 & \textit{Mid-term Vacation} & - \\ 
@@ -391,7 +410,8 @@ Phases:
     \textbf{6} & \textbf{Capstone Project Poster Due} & - \\ 
     \hline
 \end{tabular} 
-\end{table}
+\end{table*}
+
 
 \nocite{*}
 
